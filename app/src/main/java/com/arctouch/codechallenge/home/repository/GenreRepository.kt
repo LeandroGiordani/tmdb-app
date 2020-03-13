@@ -14,7 +14,10 @@ class GenreRepository(private val apiService: TmdbApi) {
             ).await()
 
             result.body()?.let {
-                if (result.isSuccessful && it.genres.isNotEmpty()) genres = it.genres
+                if (result.isSuccessful) {
+                    saveGenres(it.genres)
+                    genres = it.genres
+                }
             }
         } catch (error: Error) {
             error.printStackTrace()
@@ -26,7 +29,7 @@ class GenreRepository(private val apiService: TmdbApi) {
         return Cache.genres
     }
 
-    fun saveGenres(genres: List<Genre>) {
+    private fun saveGenres(genres: List<Genre>) {
         Cache.cacheGenres(Cache.genres.union(genres).toList())
     }
 }

@@ -1,11 +1,12 @@
 package com.arctouch.codechallenge.home.domain
 
 import com.arctouch.codechallenge.api.model.Genre
-import com.arctouch.codechallenge.api.model.Movie
+import com.arctouch.codechallenge.data.GenreResult
 import com.arctouch.codechallenge.data.MovieResult
 import com.arctouch.codechallenge.home.repository.GenreRepository
 import com.arctouch.codechallenge.home.repository.MoviesRepository
 import kotlinx.coroutines.coroutineScope
+import kotlinx.coroutines.launch
 
 class HomeUseCase(
         private val moviesRepository: MoviesRepository,
@@ -13,41 +14,40 @@ class HomeUseCase(
 ) {
     private var _page = 0L
 
-    lateinit var movieResult: MovieResult
-
-    suspend fun getMovies(page: Long, isCached: Boolean): MovieResult {
-        val movies = mutableListOf<Movie>()
-        var genres: List<Genre>
-
-        if (isCached) {
-            movies.addAll(moviesRepository.getCachedMovies())
-        }
+    suspend fun getMovies(page: Long): MovieResult {
+        lateinit var genreResult: GenreResult
+        lateinit var movieResult: MovieResult
+        //var genres: List<Genre>
 
         if (page != _page) {
             _page = page
             coroutineScope {
-                genres = if (genreRepository.getCachedGenres().isNotEmpty()) {
-                    genreRepository.getCachedGenres()
-                } else genreRepository.getGenres()
-                movieResult = moviesRepository.getUpcomingMovies(page)
-                movieResult = if (movieResult is MovieResult.Success) {
-                    getMoviesWithGenres(movieResult, genres)
-                } else
-                    MovieResult.Failure(" error unknown")
+                genreResult = genreRepository.getGenres()
+                launch { movieResult = moviesRepository.getUpcomingMovies(page) }
             }
         }
-        return movieResult
+        return when {
+            movieResult is MovieResult.Success && genreResult is GenreResult.Success -> getMoviesWithGenres(movieResult, genreResult)
+            movieResult is MovieResult.Failure || genreResult is GenreResult.Failure -> movieResult
+            else -> MovieResult.Failure("unknown failure")
+        }
     }
 
     private fun getMoviesWithGenres(
             movieSuccess: MovieResult,
-            genreList: List<Genre>
+            genreSuccess: GenreResult
     ) : MovieResult {
 
         val movies = (movieSuccess as MovieResult.Success).list
+        val genres = (genreSuccess as GenreResult.Success).list
 
         movies.forEach { movie ->
-            movie.copy(genres = genreList.filter { movie.genreIds?.contains(it.id) == true })
+            val movieGenres = mutableListOf<Genre>()
+            movie.genreIds?.forEach { genreId ->
+                val genre = genres.find { it.id == genreId }
+                if (genre != null) movieGenres.add(genre)
+            }
+            movie.genres = movieGenres
         }
         return MovieResult.Success(movies)
     }

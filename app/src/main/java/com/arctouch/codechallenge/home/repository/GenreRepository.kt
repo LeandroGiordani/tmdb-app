@@ -2,34 +2,37 @@ package com.arctouch.codechallenge.home.repository
 
 import com.arctouch.codechallenge.api.TmdbApi
 import com.arctouch.codechallenge.api.model.Genre
+import com.arctouch.codechallenge.data.GenreResult
 import com.arctouch.codechallenge.data.cache.Cache
 
 class GenreRepository(private val apiService: TmdbApi) {
-    suspend fun getGenres(): List<Genre>{
-        var genres = listOf<Genre>()
-        try {
+
+    suspend fun getGenres(): GenreResult {
+        return try {
             val result = apiService.getGenres(
                     TmdbApi.API_KEY,
                     TmdbApi.DEFAULT_LANGUAGE
             ).await()
 
-            result.body()?.let {
-                if (result.isSuccessful) {
-                    saveGenres(it.genres)
-                    genres = it.genres
-                }
+            val resultBody = result.body()
+                if (result.isSuccessful && resultBody != null) {
+                    saveGenres(resultBody.genres)
+                    GenreResult.Success(resultBody.genres)
+                } else if (getCachedGenres().isNotEmpty()) {
+                    GenreResult.Success(getCachedGenres())
+                } else {
+                    GenreResult.Failure("empty list")
             }
         } catch (error: Error) {
-            error.printStackTrace()
+            GenreResult.Failure("Failure: ${error.message}")
         }
-        return genres
     }
 
-    fun getCachedGenres(): List<Genre> {
+    private fun getCachedGenres(): List<Genre> {
         return Cache.genres
     }
 
     private fun saveGenres(genres: List<Genre>) {
-        Cache.cacheGenres(Cache.genres.union(genres).toList())
+        Cache.cacheGenres((genres).toList())
     }
 }

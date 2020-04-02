@@ -17,12 +17,20 @@ class MoviesRepository(private val apiService: TmdbApi) {
             ).await()
 
             result.body()?.let {
-                if (result.isSuccessful) {
-                    if (it.results.isNotEmpty()) {
-                        Cache.cacheMovies(it.results)
-                        return MovieResult.Success(it.results)
-                    } else
-                        MovieResult.Failure("No Movies")
+                when {
+                    result.isSuccessful -> {
+                        when {
+                            it.results.isNotEmpty() -> {
+                                Cache.cacheMovies(it.results)
+                                return MovieResult.Success(it.results)
+                            }
+                            Cache.movies.isNotEmpty() -> {
+                                return MovieResult.Success(Cache.movies)
+                            }
+                            else -> MovieResult.Failure("No Movies")
+                        }
+                    }
+                    else -> return MovieResult.Failure("No Movies")
                 }
             }
         } catch (error: Exception) {

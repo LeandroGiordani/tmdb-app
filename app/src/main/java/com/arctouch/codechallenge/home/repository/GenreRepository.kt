@@ -9,19 +9,21 @@ class GenreRepository(private val apiService: TmdbApi) {
 
     suspend fun getGenres(): GenreResult {
         return try {
-            val result = apiService.getGenres(
-                    TmdbApi.API_KEY,
-                    TmdbApi.DEFAULT_LANGUAGE
-            ).await()
+            if (getCachedGenres().isNotEmpty()) {
+                GenreResult.Success(getCachedGenres())
+            } else {
+                val result = apiService.getGenres(
+                        TmdbApi.API_KEY,
+                        TmdbApi.DEFAULT_LANGUAGE
+                ).await()
 
-            val resultBody = result.body()
+                val resultBody = result.body()
                 if (result.isSuccessful && resultBody != null) {
                     saveGenres(resultBody.genres)
                     GenreResult.Success(resultBody.genres)
-                } else if (getCachedGenres().isNotEmpty()) {
-                    GenreResult.Success(getCachedGenres())
                 } else {
                     GenreResult.Failure("empty list")
+                }
             }
         } catch (error: Error) {
             GenreResult.Failure("Failure: ${error.message}")

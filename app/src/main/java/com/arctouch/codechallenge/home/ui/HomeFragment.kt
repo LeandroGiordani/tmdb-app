@@ -21,6 +21,7 @@ class HomeFragment : Fragment() {
     private var homeAdapter: HomeAdapter? = null
     private var endlessRecyclerViewAdapter: EndlessRecyclerViewAdapter? = null
     private lateinit var linearLayoutManager: LinearLayoutManager
+    private var currentPage = 1L
 
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -49,15 +50,15 @@ class HomeFragment : Fragment() {
         if (homeAdapter == null){
             homeAdapter = HomeAdapter(movies.toMutableList())
             endlessRecyclerViewAdapter = EndlessRecyclerViewAdapter(homeAdapter) {
-                viewModel.getMovies(1L)
+                viewModel.getMovies(currentPage)
             }
             recyclerView.adapter = endlessRecyclerViewAdapter
             progressBar.visibility = View.GONE
 
         } else {
-            viewModel.getMovies(2L)
-            homeAdapter?.insertItems(movies.toMutableList())
+            homeAdapter?.insertItems(movies)
             endlessRecyclerViewAdapter?.onDataReady(true)
         }
+        currentPage++
     }
 }

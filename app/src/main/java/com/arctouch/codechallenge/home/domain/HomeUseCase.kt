@@ -5,6 +5,7 @@ import com.arctouch.codechallenge.data.GenreResult
 import com.arctouch.codechallenge.data.MovieResult
 import com.arctouch.codechallenge.home.repository.GenreRepository
 import com.arctouch.codechallenge.home.repository.MoviesRepository
+import kotlinx.coroutines.async
 import kotlinx.coroutines.coroutineScope
 import kotlinx.coroutines.launch
 
@@ -17,19 +18,23 @@ class HomeUseCase(
     suspend fun getMovies(page: Long): MovieResult {
         lateinit var genreResult: GenreResult
         lateinit var movieResult: MovieResult
-        //var genres: List<Genre>
 
         if (page != _page) {
             _page = page
             coroutineScope {
-                genreResult = genreRepository.getGenres()
-                launch { movieResult = moviesRepository.getUpcomingMovies(page) }
+                val defGenres = async { genreResult = genreRepository.getGenres() }
+                val defMovies = async { movieResult = moviesRepository.getUpcomingMovies(page) }
+                defGenres.await()
+                defMovies.await()
             }
-        }
-        return when {
-            movieResult is MovieResult.Success && genreResult is GenreResult.Success -> getMoviesWithGenres(movieResult, genreResult)
-            movieResult is MovieResult.Failure || genreResult is GenreResult.Failure -> movieResult
-            else -> MovieResult.Failure("unknown failure")
+
+            return when {
+                movieResult is MovieResult.Success && genreResult is GenreResult.Success -> getMoviesWithGenres(movieResult, genreResult)
+                movieResult is MovieResult.Failure || genreResult is GenreResult.Failure -> movieResult
+                else -> MovieResult.Failure("unknown failure")
+            }
+        } else {
+            return MovieResult.Failure("Page already loaded")
         }
     }
 

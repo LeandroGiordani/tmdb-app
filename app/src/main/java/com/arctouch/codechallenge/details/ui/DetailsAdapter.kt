@@ -5,20 +5,19 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
 import com.arctouch.codechallenge.R
-import com.arctouch.codechallenge.api.model.Movie
-import com.arctouch.codechallenge.api.model.MoviePoster
+import com.arctouch.codechallenge.api.model.MovieImage
 import com.arctouch.codechallenge.util.MovieImageUrlBuilder
 import com.bumptech.glide.Glide
 import com.bumptech.glide.request.RequestOptions
 import kotlinx.android.synthetic.main.poster_item.view.*
 
-class PostersAdapter(private val images: List<MoviePoster>) : RecyclerView.Adapter<PostersAdapter.ViewHolder>(){
+class DetailsAdapter(private val images: List<MovieImage>) : RecyclerView.Adapter<DetailsAdapter.ViewHolder>(){
 
     class ViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
 
         private val movieImageUrlBuilder = MovieImageUrlBuilder()
 
-        fun bind(image: MoviePoster) {
+        fun bind(image: MovieImage) {
             Glide.with(itemView)
                     .load(movieImageUrlBuilder.buildPosterUrl(image.filePath))
                     .apply(RequestOptions().placeholder(R.drawable.ic_image_placeholder))

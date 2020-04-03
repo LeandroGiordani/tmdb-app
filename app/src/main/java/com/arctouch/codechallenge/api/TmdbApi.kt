@@ -1,7 +1,7 @@
 package com.arctouch.codechallenge.api
 
 import com.arctouch.codechallenge.api.model.GenreResponse
-import com.arctouch.codechallenge.api.model.Movie
+import com.arctouch.codechallenge.api.model.ImagesResponse
 import com.arctouch.codechallenge.api.model.UpcomingMoviesResponse
 import kotlinx.coroutines.Deferred
 import retrofit2.Response
@@ -21,23 +21,22 @@ interface TmdbApi {
     }
 
     @GET("genre/movie/list")
-    fun getGenres(
+    fun getGenresAsync(
         @Query("api_key") apiKey: String,
         @Query("language") language: String
     ): Deferred<Response<GenreResponse>>
 
     @GET("movie/upcoming")
-    fun getUpcomingMovies(
+    fun getUpcomingMoviesAsync(
         @Query("api_key") apiKey: String,
         @Query("language") language: String,
         @Query("page") page: Long,
         @Query("region") region: String
     ): Deferred<Response<UpcomingMoviesResponse>>
 
-    @GET("movie/{id}")
-    fun getMovie(
-        @Path("id") id: Long,
-        @Query("api_key") apiKey: String,
-        @Query("language") language: String
-    ): Deferred<Response<Movie>>
+    @GET("movie/{id}/images")
+    fun getMovieImagesAsync(
+        @Path("movie_id") id: Long,
+        @Query("api_key") apiKey: String
+    ): Deferred<Response<ImagesResponse>>
 }

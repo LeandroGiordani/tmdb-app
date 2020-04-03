@@ -1,11 +1,11 @@
 package com.arctouch.codechallenge.home
 
 import android.os.Bundle
+import androidx.appcompat.app.AppCompatActivity
 import com.arctouch.codechallenge.R
-import com.arctouch.codechallenge.base.BaseActivity
 import com.arctouch.codechallenge.home.ui.HomeFragment
 
-class HomeActivity : BaseActivity() {
+class HomeActivity : AppCompatActivity() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)

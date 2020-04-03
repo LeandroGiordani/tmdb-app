@@ -1,15 +1,13 @@
 package com.arctouch.codechallenge.home.repository
 
 import com.arctouch.codechallenge.api.TmdbApi
-import com.arctouch.codechallenge.api.model.Movie
 import com.arctouch.codechallenge.data.MovieResult
-import com.arctouch.codechallenge.data.cache.Cache
 
 class MoviesRepository(private val apiService: TmdbApi) {
 
     suspend fun getUpcomingMovies(page: Long): MovieResult {
         try {
-            val result = apiService.getUpcomingMovies(
+            val result = apiService.getUpcomingMoviesAsync(
                     TmdbApi.API_KEY,
                     TmdbApi.DEFAULT_LANGUAGE,
                     page,

@@ -5,7 +5,7 @@ import com.squareup.moshi.Json
 import kotlinx.android.parcel.Parcelize
 
 @Parcelize
-data class MoviePoster (
+data class MovieImage (
         val width: Int,
         val height: Int,
         @field:Json(name = "file_path") val filePath: String

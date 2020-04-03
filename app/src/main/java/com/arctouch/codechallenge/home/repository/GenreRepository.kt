@@ -12,7 +12,7 @@ class GenreRepository(private val apiService: TmdbApi) {
             if (getCachedGenres().isNotEmpty()) {
                 GenreResult.Success(getCachedGenres())
             } else {
-                val result = apiService.getGenres(
+                val result = apiService.getGenresAsync(
                         TmdbApi.API_KEY,
                         TmdbApi.DEFAULT_LANGUAGE
                 ).await()

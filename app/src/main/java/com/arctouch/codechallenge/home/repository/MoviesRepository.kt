@@ -18,7 +18,6 @@ class MoviesRepository(private val apiService: TmdbApi) {
                 when {
                     result.isSuccessful -> {
                         if (it.results.isNotEmpty()) {
-                            //Cache.cacheMovies(it.results)
                             return MovieResult.Success(it.results)
                         }
                         else MovieResult.Failure("No Movies")

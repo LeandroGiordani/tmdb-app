@@ -36,7 +36,6 @@ class DetailsFragment : Fragment() {
     override fun onActivityCreated(savedInstanceState: Bundle?) {
         super.onActivityCreated(savedInstanceState)
         observeViewModel()
-//        setupToolbar()
 
     }
 
@@ -49,12 +48,12 @@ class DetailsFragment : Fragment() {
         super.onViewCreated(view, savedInstanceState)
 
         Glide.with(this)
-                .load(MovieImageUrlBuilder().buildBackdropUrl(movie.backdropPath!!))
-                .into(movieBanner)
+                .load(MovieImageUrlBuilder().buildBackdropUrl(movie.backdropPath))
+                .into(imageViewMovieBanner)
 
-        movieSynopses.text = movie.overview
-        movieGenres.text = movie.genres?.joinToString(separator = ", ") { it.name }
-        movieReleaseDate.text = movie.releaseDate
+        textViewMovieSynopses.text = movie.overview
+        textViewMovieGenres.text = movie.genres?.joinToString(separator = ", ") { it.name }
+        textViewMovieReleaseDate.text = movie.releaseDate
     }
 
     private fun observeViewModel() {
@@ -63,12 +62,6 @@ class DetailsFragment : Fragment() {
             setupCarousel(images)
         })
     }
-
-//    private fun setupToolbar() {
-//        setSupportActionBar(detailsToolbar)
-//        detailsToolbar.title = movie.title
-//        detailsToolbar.
-//    }
 
     private fun setupCarousel(images: List<MovieImage>) {
         detailsAdapter = DetailsAdapter(images)

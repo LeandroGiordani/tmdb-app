@@ -4,6 +4,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    app:layout_behavior="@string/appbar_scrolling_view_behavior"
     tools:context=".details.ui.DetailsFragment">
 
     <androidx.constraintlayout.widget.ConstraintLayout
@@ -11,39 +12,49 @@
         android:layout_height="wrap_content">
 
         <ImageView
-            android:id="@+id/movieBanner"
+            android:id="@+id/imageViewMovieBanner"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            app:layout_constraintTop_toBottomOf="@id/detailsToolbar"
+            app:layout_constraintTop_toTopOf="parent"
             tools:ignore="ContentDescription" />
 
         <TextView
-            android:id="@+id/movieSynopses"
+            android:id="@+id/textViewSynopsesLabel"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginStart="8dp"
             android:layout_marginTop="12dp"
             android:layout_marginEnd="8dp"
-            android:textSize="16sp"
+            android:text="@string/synopses_label"
+            android:textSize="20sp"
             android:textStyle="bold"
-            android:textAlignment="center"
-            app:layout_constraintTop_toBottomOf="@id/movieBanner"
-            tools:text="Synopses" />
+            app:layout_constraintTop_toBottomOf="@id/imageViewMovieBanner" />
 
         <TextView
-            android:id="@+id/movieGenres"
+            android:id="@+id/textViewMovieSynopses"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginStart="8dp"
             android:layout_marginTop="12dp"
             android:layout_marginEnd="8dp"
+            android:justificationMode="inter_word"
             android:textSize="16sp"
-            android:textStyle="bold"
-            app:layout_constraintTop_toBottomOf="@id/movieSynopses"
-            tools:text="Genres" />
+            app:layout_constraintTop_toBottomOf="@id/textViewSynopsesLabel" />
 
         <TextView
-            android:id="@+id/movieReleaseDate"
+            android:id="@+id/textViewGenresLabel"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="8dp"
+            android:layout_marginTop="12dp"
+            android:layout_marginEnd="8dp"
+            android:text="@string/genres_label"
+            android:textSize="20sp"
+            android:textStyle="bold"
+            app:layout_constraintTop_toBottomOf="@id/textViewMovieSynopses" />
+
+        <TextView
+            android:id="@+id/textViewMovieGenres"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginStart="8dp"
@@ -51,8 +62,30 @@
             android:layout_marginEnd="8dp"
             android:textSize="16sp"
             android:textStyle="bold"
-            app:layout_constraintTop_toBottomOf="@id/movieGenres"
-            tools:text="Release Date" />
+            app:layout_constraintTop_toBottomOf="@id/textViewGenresLabel" />
+
+        <TextView
+            android:id="@+id/textViewReleaseDateLabel"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="8dp"
+            android:layout_marginTop="12dp"
+            android:layout_marginEnd="8dp"
+            android:text="@string/release_date_label"
+            android:textSize="20sp"
+            android:textStyle="bold"
+            app:layout_constraintTop_toBottomOf="@id/textViewMovieGenres" />
+
+        <TextView
+            android:id="@+id/textViewMovieReleaseDate"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="8dp"
+            android:layout_marginTop="12dp"
+            android:layout_marginEnd="8dp"
+            android:textSize="16sp"
+            android:textStyle="bold"
+            app:layout_constraintTop_toBottomOf="@id/textViewReleaseDateLabel" />
 
         <androidx.recyclerview.widget.RecyclerView
             android:id="@+id/moviePostersCarousel"

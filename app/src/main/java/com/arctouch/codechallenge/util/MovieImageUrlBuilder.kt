@@ -11,7 +11,7 @@ class MovieImageUrlBuilder {
         return POSTER_URL + posterPath + "?api_key=" + TmdbApi.API_KEY
     }
 
-    fun buildBackdropUrl(backdropPath: String): String {
+    fun buildBackdropUrl(backdropPath: String?): String {
         return BACKDROP_URL + backdropPath + "?api_key=" + TmdbApi.API_KEY
     }
 }

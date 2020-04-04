@@ -36,7 +36,7 @@ interface TmdbApi {
 
     @GET("movie/{id}/images")
     fun getMovieImagesAsync(
-        @Path("movie_id") id: Long,
+        @Path("id") id: Long,
         @Query("api_key") apiKey: String
     ): Deferred<Response<ImagesResponse>>
 }

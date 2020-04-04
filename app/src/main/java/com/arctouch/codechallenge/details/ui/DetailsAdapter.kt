@@ -19,7 +19,7 @@ class DetailsAdapter(private val images: List<MovieImage>) : RecyclerView.Adapte
 
         fun bind(image: MovieImage) {
             Glide.with(itemView)
-                    .load(movieImageUrlBuilder.buildPosterUrl(image.filePath))
+                    .load(movieImageUrlBuilder.buildDetailsPosterUrl(image.filePath))
                     .apply(RequestOptions().placeholder(R.drawable.ic_image_placeholder))
                     .into(itemView.posterImageView)
         }

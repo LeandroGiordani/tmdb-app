@@ -36,7 +36,6 @@ class DetailsFragment : Fragment() {
     override fun onActivityCreated(savedInstanceState: Bundle?) {
         super.onActivityCreated(savedInstanceState)
         observeViewModel()
-
     }
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?,
@@ -61,6 +60,8 @@ class DetailsFragment : Fragment() {
             val images = it ?: return@Observer
             setupCarousel(images)
         })
+
+        detailsViewModel.getImages()
     }
 
     private fun setupCarousel(images: List<MovieImage>) {

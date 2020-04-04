@@ -7,7 +7,6 @@ import com.arctouch.codechallenge.home.repository.GenreRepository
 import com.arctouch.codechallenge.home.repository.MoviesRepository
 import kotlinx.coroutines.async
 import kotlinx.coroutines.coroutineScope
-import kotlinx.coroutines.launch
 
 class HomeUseCase(
         private val moviesRepository: MoviesRepository,

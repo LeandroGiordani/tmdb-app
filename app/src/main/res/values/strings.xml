@@ -1,10 +1,15 @@
 <resources>
-    <string name="app_name">Code Challenge</string>
+    <string name="app_name">TMDB</string>
     <string name="movie_and_genres">%s - %s</string>
-
-    <!-- TODO: Remove or change this placeholder text -->
-    <string name="hello_blank_fragment">Hello blank fragment</string>
     <string name="synopses_label">Overview</string>
     <string name="genres_label">Genres</string>
     <string name="release_date_label">Release Date</string>
+    <string name="home_action_list_title">Action</string>
+    <string name="home_animation_list_title">Animation</string>
+    <string name="home_comedy_list_title">Comedy</string>
+    <string name="home_documentary_list_title">Documentary</string>
+    <string name="home_drama_list_title">Drama</string>
+    <string name="home_horror_list_title">Horror</string>
+    <string name="home_romance_list_title">Romance</string>
+    <string name="home_thriller_list_title">Thriller</string>
 </resources>

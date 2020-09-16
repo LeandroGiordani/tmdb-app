@@ -10,8 +10,8 @@ class MoviesRepository(private val apiService: TmdbApi) {
         try {
             val result = apiService.getUpcomingMoviesAsync(
                     TmdbApi.API_KEY,
-                    null,
-                    null
+                    TmdbApi.DEFAULT_LANGUAGE,
+                    TmdbApi.DEFAULT_REGION
             ).await()
 
             result.body()?.let {

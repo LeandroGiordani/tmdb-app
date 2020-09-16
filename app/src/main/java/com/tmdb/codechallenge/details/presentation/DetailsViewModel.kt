@@ -19,7 +19,7 @@ class DetailsViewModel(
     val images: LiveData<List<MovieImage>>
         get() = _images
 
-    fun getImages() {
+    fun retrieveImages() {
         viewModelScope.launch(Dispatchers.IO) {
             _images.postValue(detailsUseCase.getImages(movie))
         }
